@@ -92,6 +92,10 @@ enum AdvSettingsRows
     DISK_CACHE_TTL,
     OS_CACHE,
     COALESCE_RW,
+    MAX_BUFFER_SIZE,
+    MAX_PIECES,
+    MAX_DECODE_DEPTH,
+    MAX_DECODE_TOKENS,
 #if (LIBTORRENT_VERSION_NUM >= 10202)
     PIECE_EXTENT_AFFINITY,
 #endif
@@ -274,6 +278,10 @@ void AdvancedSettings::saveAdvancedSettings()
 
     session->setAnnounceToAllTrackers(m_checkBoxAnnounceAllTrackers.isChecked());
     session->setAnnounceToAllTiers(m_checkBoxAnnounceAllTiers.isChecked());
+    session->setMaxBufferSize(m_spinBoxMaxBufferSize.value());
+    session->setMaxPieces(m_spinBoxMaxPieces.value());
+    session->setMaxDecodeDepth(m_spinBoxMaxDecodeDepth.value());
+    session->setMaxDecodeTokens(m_spinBoxMaxDecodeTokens.value());
 }
 
 void AdvancedSettings::updateCacheSpinSuffix(int value)
@@ -609,6 +617,28 @@ void AdvancedSettings::loadAdvancedSettings()
     // Announce to all tiers
     m_checkBoxAnnounceAllTiers.setChecked(session->announceToAllTiers());
     addRow(ANNOUNCE_ALL_TIERS, tr("Always announce to all tiers"), &m_checkBoxAnnounceAllTiers);
+
+    m_spinBoxMaxBufferSize.setMinimum(1);
+    m_spinBoxMaxBufferSize.setMaximum(std::numeric_limits<int>::max());
+    m_spinBoxMaxBufferSize.setValue(pref->getMaxBufferSize());
+    addRow(MAX_BUFFER_SIZE, tr("Maximum loading torrent buffer size"), &m_spinBoxMaxBufferSize);
+
+    m_spinBoxMaxPieces.setMinimum(1);
+    m_spinBoxMaxPieces.setMaximum(std::numeric_limits<int>::max());
+    m_spinBoxMaxPieces.setValue(pref->getMaxPieces());
+    m_spinBoxMaxPieces.setDisplayIntegerBase(16);
+    m_spinBoxMaxPieces.setPrefix("0x");
+    addRow(MAX_PIECES, tr("Maximum number of pieces allowed in a torrent"), &m_spinBoxMaxPieces);
+
+    m_spinBoxMaxDecodeDepth.setMinimum(1);
+    m_spinBoxMaxDecodeDepth.setMaximum(std::numeric_limits<int>::max());
+    m_spinBoxMaxDecodeDepth.setValue(pref->getMaxDecodeDepth());
+    addRow(MAX_DECODE_DEPTH, tr("Maximum recursion depth in the torrent's bdecoded structure"), &m_spinBoxMaxDecodeDepth);
+
+    m_spinBoxMaxDecodeTokens.setMinimum(1);
+    m_spinBoxMaxDecodeTokens.setMaximum(std::numeric_limits<int>::max());
+    m_spinBoxMaxDecodeTokens.setValue(pref->getMaxDecodeTokens());
+    addRow(MAX_DECODE_TOKENS, tr("Maximum number of bdecoded tokens in a torrent"), &m_spinBoxMaxDecodeTokens);
 }
 
 template <typename T>

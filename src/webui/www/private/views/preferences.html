@@ -1161,6 +1161,38 @@
                     <input type="text" id="stopTrackerTimeout" style="width: 15em;" />
                 </td>
              </tr>
+             <tr>
+                 <td>
+                     <label for="maxBufferSize">QBT_TR(Maximum loading torrent buffer size:)QBT_TR[CONTEXT=OptionsDialog]</label>
+                 </td>
+                 <td>
+                     <input type="text" id="maxBufferSize" style="width: 15em;" />
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                     <label for="maxPieces">QBT_TR(Maximum number of pieces allowed in a torrent:)QBT_TR[CONTEXT=OptionsDialog]</label>
+                 </td>
+                 <td>
+                     <input type="text" id="maxPieces" style="width: 15em;" />
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                     <label for="maxDecodeDepth">QBT_TR(Maximum recursion depth in the torrent's bdecoded structure:)QBT_TR[CONTEXT=OptionsDialog]</label>
+                 </td>
+                 <td>
+                     <input type="text" id="maxDecodeDepth" style="width: 15em;" />
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                     <label for="maxDecodeTokens">QBT_TR(Maximum number of bdecoded tokens in a torrent:)QBT_TR[CONTEXT=OptionsDialog]</label>
+                 </td>
+                 <td>
+                     <input type="text" id="maxDecodeTokens" style="width: 15em;" />
+                 </td>
+             </tr>
         </table>
     </fieldset>
 </div>
@@ -1863,6 +1895,10 @@
                         $('announceAllTiers').setProperty('checked', pref.announce_to_all_tiers);
                         $('announceIP').setProperty('value', pref.announce_ip);
                         $('stopTrackerTimeout').setProperty('value', pref.stop_tracker_timeout);
+                        $('maxBufferSize').setProperty('value', pref.max_buffer_size);
+                        $('maxPieces').setProperty('value', pref.max_pieces);
+                        $('maxDecodeDepth').setProperty('value', pref.max_decode_depth);
+                        $('maxDecodeTokens').setProperty('value', pref.max_decode_tokens);
                     }
                 }
             }).send();
@@ -2245,6 +2281,10 @@
             settings.set('announce_to_all_tiers', $('announceAllTiers').getProperty('checked'));
             settings.set('announce_ip', $('announceIP').getProperty('value'));
             settings.set('stop_tracker_timeout', $('stopTrackerTimeout').getProperty('value'));
+            settings.set('max_buffer_size', $('maxBufferSize').getProperty('value'));
+            settings.set('max_pieces', $('maxPieces').getProperty('value'));
+            settings.set('max_decode_depth', $('maxDecodeDepth').getProperty('value'));
+            settings.set('max_decode_tokens', $('maxDecodeTokens').getProperty('value'));
 
             // Send it to qBT
             const json_str = JSON.encode(settings);

@@ -322,6 +322,11 @@ void AppController::preferencesAction()
     data["announce_ip"] = session->announceIP();
     // Stop tracker timeout
     data["stop_tracker_timeout"] = session->stopTrackerTimeout();
+    // Torrent loading limits
+    data["max_buffer_size"] = session->maxBufferSize();
+    data["max_pieces"] = session->maxPieces();
+    data["max_decode_depth"] = session->maxDecodeDepth();
+    data["max_decode_tokens"] = session->maxDecodeTokens();
 
     setResult(data);
 }
@@ -768,6 +773,14 @@ void AppController::setPreferencesAction()
     // Stop tracker timeout
     if (hasKey("stop_tracker_timeout"))
         session->setStopTrackerTimeout(it.value().toInt());
+    if (hasKey("max_buffer_size"))
+        session->setMaxBufferSize(it.value().toInt());
+    if (hasKey("max_pieces"))
+        session->setMaxPieces(it.value().toInt());
+    if (hasKey("max_decode_depth"))
+        session->setMaxDecodeDepth(it.value().toInt());
+    if (hasKey("max_decode_tokens"))
+        session->setMaxDecodeTokens(it.value().toInt());
 
     // Save preferences
     pref->apply();

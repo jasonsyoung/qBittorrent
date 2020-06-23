@@ -963,6 +963,46 @@ void Preferences::disableRecursiveDownload(const bool disable)
     setValue("Preferences/Advanced/DisableRecursiveDownload", disable);
 }
 
+int Preferences::getMaxBufferSize() const
+{
+    return value("Preferences/Advanced/maxBufferSize", 6000000).toInt();
+}
+
+void Preferences::setMaxBufferSize(const int max)
+{
+    setValue("Preferences/Advanced/maxBufferSize", max);
+}
+
+int Preferences::getMaxPieces() const
+{
+    return value("Preferences/Advanced/maxPieces", 0x100000).toInt();
+}
+
+void Preferences::setMaxPieces(const int max)
+{
+    setValue("Preferences/Advanced/maxPieces", max);
+}
+
+int Preferences::getMaxDecodeDepth() const
+{
+    return value("Preferences/Advanced/maxDecodeDepth", 100).toInt();
+}
+
+void Preferences::setMaxDecodeDepth(const int max)
+{
+    setValue("Preferences/Advanced/maxDecodeDepth", max);
+}
+
+int Preferences::getMaxDecodeTokens() const
+{
+    return value("Preferences/Advanced/maxDecodeTokens", 2000000).toInt();
+}
+
+void Preferences::setMaxDecodeTokens(const int max)
+{
+    setValue("Preferences/Advanced/maxDecodeTokens", max);
+}
+
 #ifdef Q_OS_WIN
 bool Preferences::neverCheckFileAssoc() const
 {

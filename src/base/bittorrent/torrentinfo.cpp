@@ -31,7 +31,7 @@
 #if (LIBTORRENT_VERSION_NUM < 10200)
 #include <boost/optional.hpp>
 #endif
-
+#include <iostream>
 #include <libtorrent/bencode.hpp>
 #include <libtorrent/create_torrent.hpp>
 #include <libtorrent/error_code.hpp>
@@ -44,6 +44,7 @@
 #include <QStringList>
 #include <QUrl>
 
+#include "base/bittorrent/session.h"
 #include "base/exceptions.h"
 #include "base/global.h"
 #include "base/utils/fs.h"
@@ -107,14 +108,33 @@ TorrentInfo TorrentInfo::load(const QByteArray &data, QString *error) noexcept
         return TorrentInfo();
     }
 
+#if (LIBTORRENT_VERSION_NUM >= 10202)
+    const BitTorrent::Session *const session = BitTorrent::Session::instance();
+
+    struct lt::load_torrent_limits torrent_limits = {0};
+    torrent_limits.max_buffer_size = session->maxBufferSize();
+    torrent_limits.max_pieces = session->maxPieces();
+    torrent_limits.max_decode_depth = session->maxDecodeDepth();
+    torrent_limits.max_decode_tokens = session->maxDecodeTokens();
+
+    try {
+        TorrentInfo info {NativePtr(new lt::torrent_info(node, torrent_limits))};
+        return info;
+    } catch(boost::system::system_error const& e) {
+        // How to notify the user that an error occured loading this torrent (and
+        // thus it won't be shown in the interface) and the user needs to adjust
+        // whatever limit failed via advanced settings?
+        return TorrentInfo();
+    }
+#else
     TorrentInfo info {NativePtr(new lt::torrent_info(node, ec))};
     if (ec) {
         if (error)
             *error = QString::fromStdString(ec.message());
         return TorrentInfo();
     }
-
     return info;
+#endif
 }
 
 TorrentInfo TorrentInfo::loadFromFile(const QString &path, QString *error) noexcept

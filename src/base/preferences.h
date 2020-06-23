@@ -270,6 +270,14 @@ public:
     void resolvePeerCountries(bool resolve);
     bool resolvePeerHostNames() const;
     void resolvePeerHostNames(bool resolve);
+    int getMaxBufferSize() const;
+    void setMaxBufferSize(int max);
+    int getMaxPieces() const;
+    void setMaxPieces(int max);
+    int getMaxDecodeDepth() const;
+    void setMaxDecodeDepth(int max);
+    int getMaxDecodeTokens() const;
+    void setMaxDecodeTokens(int max);
 #if (defined(Q_OS_UNIX) && !defined(Q_OS_MACOS))
     bool useSystemIconTheme() const;
     void useSystemIconTheme(bool enabled);

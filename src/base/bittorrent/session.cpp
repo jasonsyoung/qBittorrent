@@ -541,6 +541,10 @@ Session::Session(QObject *parent)
                             return tmp;
                         }
                  )
+    , m_maxBufferSize(BITTORRENT_SESSION_KEY("maxBufferSize"), 6000000)
+    , m_maxPieces(BITTORRENT_SESSION_KEY("maxPieces"), 0x100000)
+    , m_maxDecodeDepth(BITTORRENT_SESSION_KEY("maxDecodeDepth"), 100)
+    , m_maxDecodeTokens(BITTORRENT_SESSION_KEY("maxDecodeTokens"), 2000000)
 #if defined(Q_OS_WIN)
     , m_OSMemoryPriority(BITTORRENT_KEY("OSMemoryPriority"), OSMemoryPriority::BelowNormal)
 #endif
@@ -2516,7 +2520,7 @@ bool Session::loadMetadata(const MagnetUri &magnetUri)
     p.flags |= lt::torrent_flags::upload_mode;
 
     p.storage = customStorageConstructor;
-#endif    
+#endif
 
     // Adding torrent to BitTorrent session
     lt::error_code ec;
@@ -3688,6 +3692,58 @@ void Session::setAnnounceIP(const QString &ip)
 {
     if (ip != m_announceIP) {
         m_announceIP = ip;
+        configureDeferred();
+    }
+}
+
+int Session::maxBufferSize() const
+{
+    return m_maxBufferSize;
+}
+
+void Session::setMaxBufferSize(const int max)
+{
+    if (max != m_maxBufferSize) {
+        m_maxBufferSize = max;
+        configureDeferred();
+    }
+}
+
+int Session::maxPieces() const
+{
+    return m_maxPieces;
+}
+
+void Session::setMaxPieces(const int max)
+{
+    if (max != m_maxPieces) {
+        m_maxPieces = max;
+        configureDeferred();
+    }
+}
+
+int Session::maxDecodeDepth() const
+{
+    return m_maxDecodeDepth;
+}
+
+void Session::setMaxDecodeDepth(const int max)
+{
+    if (max != m_maxDecodeDepth) {
+        m_maxDecodeDepth = max;
+        configureDeferred();
+    }
+}
+
+int Session::maxDecodeTokens() const
+{
+    return m_maxDecodeTokens;
+}
+
+void Session::setMaxDecodeTokens(const int max)
+{
+    if (max != m_maxDecodeTokens) {
+        m_maxDecodeTokens = max;
         configureDeferred();
     }
 }

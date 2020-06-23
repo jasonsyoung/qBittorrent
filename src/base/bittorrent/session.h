@@ -412,6 +412,14 @@ namespace BitTorrent
         void setTrackerFilteringEnabled(bool enabled);
         QStringList bannedIPs() const;
         void setBannedIPs(const QStringList &newList);
+        int maxBufferSize() const;
+        void setMaxBufferSize(int max);
+        int maxPieces() const;
+        void setMaxPieces(int max);
+        int maxDecodeDepth() const;
+        void setMaxDecodeDepth(int max);
+        int maxDecodeTokens() const;
+        void setMaxDecodeTokens(int max);
 #if defined(Q_OS_WIN)
         OSMemoryPriority getOSMemoryPriority() const;
         void setOSMemoryPriority(OSMemoryPriority priority);
@@ -713,6 +721,10 @@ namespace BitTorrent
         CachedSettingValue<bool> m_isDisableAutoTMMWhenCategorySavePathChanged;
         CachedSettingValue<bool> m_isTrackerEnabled;
         CachedSettingValue<QStringList> m_bannedIPs;
+        CachedSettingValue<int> m_maxBufferSize;
+        CachedSettingValue<int> m_maxPieces;
+        CachedSettingValue<int> m_maxDecodeDepth;
+        CachedSettingValue<int> m_maxDecodeTokens;
 #if defined(Q_OS_WIN)
         CachedSettingValue<OSMemoryPriority> m_OSMemoryPriority;
 #endif
